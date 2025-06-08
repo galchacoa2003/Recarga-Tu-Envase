@@ -5,6 +5,7 @@ public class Main {
     // Menu principal tiene como objetivo mostrar los datos
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        
 
         int opcion;
         
@@ -22,6 +23,7 @@ public class Main {
             System.out.print("|Elige una opción (1-4): ");
 
             opcion = scanner.nextInt();
+            scanner.nextLine();  
 
             switch (opcion) {
                 case 1:
@@ -30,7 +32,7 @@ public class Main {
                     break;
                 case 2:
                     // Ver ventas registradas
-                    System.out.println("Opción 2: Ver ventas registradas");
+                    Ventas.verVentasRegistradas(scanner);  
                     break;
                 case 3:
                     // Cancelar última venta
@@ -38,8 +40,9 @@ public class Main {
                     break;
                 case 4:
                     // salir
-                    System.out.println("Saliendo del programa...");
-                    break;
+                    System.out.println("Saliendo del programa...");                   
+                    scanner.close();  // Cerrar el scanner al final del programa
+                    return;
                 default:
                     System.out.println("Opción no válida. Por favor elige una opción entre 1 y 4.");
                     break;
