@@ -25,6 +25,8 @@ public class Main {
         // Inicializando un objeto de la clase Ventas
         Ventas ventas = new Ventas();
 
+         ventas.cargarClientesEnCola(); // cargar clientes al inicio
+
         int opcion;
         
         // Bucle principal del menú
@@ -48,6 +50,7 @@ public class Main {
                 case 1:
                     // Registrar venta
                     limpiarConsola();
+                    ventas.verClientesEnCola(scanner);
                     ventas.registrarVenta(scanner);
                     break;
                 case 2:

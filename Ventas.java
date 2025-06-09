@@ -1,8 +1,61 @@
 import java.util.Scanner;
 
+// Nodo de la cola de clientes
+class NodoCola {
+    String nombreCliente;
+    NodoCola siguiente;
+
+    public NodoCola(String nombreCliente) {
+        this.nombreCliente = nombreCliente;
+        this.siguiente = null;
+    }
+}
+
+// Implementación propia de una cola
+class ColaClientes {
+    private NodoCola frente;
+    private NodoCola fin;
+
+    public ColaClientes() {
+        frente = null;
+        fin = null;
+    }
+
+    public void encolar(String nombreCliente) {
+        NodoCola nuevo = new NodoCola(nombreCliente);
+        if (frente == null) {
+            frente = fin = nuevo;
+        } else {
+            fin.siguiente = nuevo;
+            fin = nuevo;
+        }
+    }
+
+    public String desencolar() {
+        if (frente == null) return null;
+        String cliente = frente.nombreCliente;
+        frente = frente.siguiente;
+        if (frente == null) fin = null;
+        return cliente;
+    }
+
+    public boolean estaVacia() {
+        return frente == null;
+    }
+
+    public void mostrarCola() {
+        NodoCola actual = frente;
+        System.out.println("\nClientes en espera:");
+        while (actual != null) {
+            System.out.println("- " + actual.nombreCliente);
+            actual = actual.siguiente;
+        }
+    }
+}
+
+// Clase principal de ventas
 public class Ventas {
 
-    // Clase Nodo para la lista enlazada
     class Nodo {
         String producto;
         int cantidad;
@@ -17,7 +70,6 @@ public class Ventas {
         }
     }
 
-    // Clase para los productos disponibles en el negocio
     class Producto {
         String nombre;
         int stock;
@@ -30,9 +82,10 @@ public class Ventas {
         }
     }
 
-    // Lista de productos fijos
     Producto[] productos;
-    Nodo inicio; // inicio de la lista de ventas
+    Nodo inicio;
+    ColaClientes cola; 
+
     public Ventas() {
         productos = new Producto[]{
             new Producto("Detergente", 50, 2.5),
@@ -41,16 +94,15 @@ public class Ventas {
             new Producto("Multiusos", 20, 2.0)
         };
         inicio = null;
+        cola = new ColaClientes();
     }
 
-    // Método para limpiar la consola
     public void limpiarConsola() {
         try {
             String sistema = System.getProperty("os.name");
             if (sistema.contains("Windows")) {
                 new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
             } else {
-                // Linux o Mac
                 System.out.print("\033[H\033[2J");
                 System.out.flush();
             }
@@ -59,8 +111,6 @@ public class Ventas {
         }
     }
 
-
-    // Mostrar productos disponibles
     public void mostrarProductosDisponibles() {
         System.out.println("\nProductos disponibles:");
         for (int i = 0; i < productos.length; i++) {
@@ -70,8 +120,26 @@ public class Ventas {
         }
     }
 
-    // Registrar una venta nueva
+    // Cargar algunos clientes en cola
+    public void cargarClientesEnCola() {
+        cola.encolar("Gabriel Villegas");
+        cola.encolar("Gabriela Alchacoa");
+        cola.encolar("Perez Jiménez");
+    }
+
     public void registrarVenta(Scanner scanner) {
+        if (cola.estaVacia()) {
+            System.out.println("No hay clientes en cola.");
+            System.out.println("Presione Enter para continuar...");
+            scanner.nextLine();
+            return;
+        }
+
+        String cliente = cola.desencolar();
+        limpiarConsola();
+        System.out.println("Atendiendo a: " + cliente);
+        System.out.println("------------------------------------------");
+
         mostrarProductosDisponibles();
 
         int opcion = 0;
@@ -81,7 +149,7 @@ public class Ventas {
                 opcion = scanner.nextInt();
                 scanner.nextLine(); 
                 if (opcion >= 1 && opcion <= productos.length) {
-                    break; // opción válida
+                    break;
                 } else {
                     System.out.println("Número inválido. Intente nuevamente.");
                 }
@@ -121,12 +189,12 @@ public class Ventas {
 
         System.out.println("Resumen de la compra:");
         System.out.println("---------------------------");
+        System.out.println("Cliente: " + cliente);
         System.out.println("Producto: " + seleccionado.nombre);
         System.out.println("Cantidad: " + cantidad);
         System.out.printf("Precio unitario: $%.2f\n", seleccionado.precio);
         System.out.println("---------------------------");
         System.out.printf("Total a pagar: $%.2f\n", total);
-
 
         double pago = 0;
         while (true) {
@@ -163,9 +231,6 @@ public class Ventas {
         scanner.nextLine();
     }
 
-
-
-    // Agregar una venta a la lista enlazada
     public void agregarVenta(String nombre, int cantidad, double precio) {
         Nodo nueva = new Nodo(nombre, cantidad, precio);
         if (inicio == null) {
@@ -179,7 +244,6 @@ public class Ventas {
         }
     }
 
-    // Mostrar todas las ventas guardadas
     public void verVentasRegistradas(Scanner scanner) {
         if (inicio == null) {
             System.out.println("No hay ventas aún.");
@@ -195,6 +259,11 @@ public class Ventas {
         }
 
         System.out.println("Presione Enter para volver al menú...");
+        scanner.nextLine();
+    }
+
+    public void verClientesEnCola(Scanner scanner) {
+        cola.mostrarCola();
         scanner.nextLine();
     }
 }
