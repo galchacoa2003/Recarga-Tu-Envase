@@ -60,7 +60,7 @@ public class Main {
                     break;
                 case 3:
                     // Cancelar última venta
-                    System.out.println("Opción 3: Cancelar última venta");
+                    ventas.cancelarUltimaVenta(scanner);
                     break;
                 case 4:
                     // salir
