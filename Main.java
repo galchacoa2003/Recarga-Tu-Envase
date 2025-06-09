@@ -48,12 +48,12 @@ public class Main {
                 case 1:
                     // Registrar venta
                     limpiarConsola();
-                    ventas.mostrarProductosDisponibles(scanner);  
+                    ventas.registrarVenta(scanner);
                     break;
                 case 2:
                     // Ver ventas registradas
                     limpiarConsola();
-                    ventas.verVentasRegistradas(scanner);  // Llamada al método verVentasRegistradas
+                    ventas.verVentasRegistradas(scanner);
                     break;
                 case 3:
                     // Cancelar última venta

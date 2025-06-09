@@ -2,8 +2,6 @@ import java.util.Scanner;
 
 public class Ventas {
 
-
-    
     // Clase Nodo para la lista enlazada
     class Nodo {
         String producto;
@@ -19,63 +17,184 @@ public class Ventas {
         }
     }
 
-    // Clase Producto que contiene nombre, cantidad y precio
+    // Clase para los productos disponibles en el negocio
     class Producto {
         String nombre;
-        int cantidad;
+        int stock;
         double precio;
 
-        public Producto(String nombre, int cantidad, double precio) {
+        public Producto(String nombre, int stock, double precio) {
             this.nombre = nombre;
-            this.cantidad = cantidad;
+            this.stock = stock;
             this.precio = precio;
         }
     }
 
-    // Lista de productos 
-    Producto[] productosDisponibles;
-
-    // Constructor de Ventas
+    // Lista de productos fijos
+    Producto[] productos;
+    Nodo inicio; // inicio de la lista de ventas
     public Ventas() {
-        // Pre-cargar productos
-        productosDisponibles = new Producto[]{
+        productos = new Producto[]{
             new Producto("Detergente", 50, 2.5),
             new Producto("Desinfectante", 50, 3.0),
             new Producto("Blanqueador", 20, 1.8),
-            new Producto("Limpiador Multiusos", 20, 2.0)
+            new Producto("Multiusos", 20, 2.0)
         };
+        inicio = null;
     }
 
-    // Método para mostrar los productos disponibles
-    public void mostrarProductosDisponibles(Scanner scanner) {
-        System.out.println("\nProductos disponibles:");
-        for (int i = 0; i < productosDisponibles.length; i++) {
-            System.out.println((i + 1) + ". " + productosDisponibles[i].nombre + " - Cantidad: " + productosDisponibles[i].cantidad + " - Precio: $" + productosDisponibles[i].precio);
+    // Método para limpiar la consola
+    public void limpiarConsola() {
+        try {
+            String sistema = System.getProperty("os.name");
+            if (sistema.contains("Windows")) {
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } else {
+                // Linux o Mac
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
+            }
+        } catch (Exception e) {
+            System.out.println("No se pudo limpiar la consola.");
         }
-         // Esperar que el usuario presione Enter para continuar
-        System.out.println("Presiona Enter para continuar...");
-        scanner.nextLine();  // Esperar a que el usuario presione Enter
-        System.out.println("¡Gracias por continuar!");
-    }
-
-    // Método para mostrar ventas registradas (actualmente solo muestra los productos)
-    public  void verVentasRegistradas(Scanner scanner) {
-        
-        System.out.println("Producto: Detergente, Cantidad: 3, Precio: 2.5");
-        System.out.println("Producto: Desinfectante, Cantidad: 5, Precio: 3.0");
-        System.out.println("Producto: Jabón para manos, Cantidad: 2, Precio: 1.5");
-        System.out.println("Producto: Limpiador multiusos, Cantidad: 4, Precio: 2.0");
-        System.out.println("Producto: Blanqueador, Cantidad: 6, Precio: 1.8");
-        System.out.println("Producto: Esponja de cocina, Cantidad: 10, Precio: 0.5");
-        System.out.println("Producto: Papel higiénico, Cantidad: 12, Precio: 1.2");
-        System.out.println("Producto: Limpiador de baño, Cantidad: 8, Precio: 3.5");
-        System.out.println("Producto: Ambientador, Cantidad: 7, Precio: 2.2");
-        System.out.println("Producto: Toallitas húmedas, Cantidad: 15, Precio: 0.8");
-         // Esperar que el usuario presione Enter para continuar
-        System.out.println("Presiona Enter para continuar...");
-        scanner.nextLine();  // Esperar a que el usuario presione Enter
-        System.out.println("¡Gracias por continuar!");
     }
 
 
+    // Mostrar productos disponibles
+    public void mostrarProductosDisponibles() {
+        System.out.println("\nProductos disponibles:");
+        for (int i = 0; i < productos.length; i++) {
+            System.out.println((i + 1) + ". " + productos[i].nombre +
+                " - Stock: " + productos[i].stock +
+                " - Precio: $" + productos[i].precio);
+        }
+    }
+
+    // Registrar una venta nueva
+    public void registrarVenta(Scanner scanner) {
+        mostrarProductosDisponibles();
+
+        int opcion = 0;
+        while (true) {
+            System.out.print("Ingrese el número del producto que quiere comprar: ");
+            if (scanner.hasNextInt()) {
+                opcion = scanner.nextInt();
+                scanner.nextLine(); 
+                if (opcion >= 1 && opcion <= productos.length) {
+                    break; // opción válida
+                } else {
+                    System.out.println("Número inválido. Intente nuevamente.");
+                }
+            } else {
+                System.out.println("Entrada no válida. Debe ser un número.");
+                scanner.nextLine(); 
+            }
+        }
+
+        Producto seleccionado = productos[opcion - 1];
+
+        limpiarConsola();
+        System.out.println("Has seleccionado: " + seleccionado.nombre);
+        System.out.println("Precio unitario: $" + seleccionado.precio);
+        System.out.println("Stock disponible: " + seleccionado.stock);
+        System.out.println("------------------------------------------");
+
+        int cantidad = 0;
+        while (true) {
+            System.out.print("Ingrese la cantidad: ");
+            if (scanner.hasNextInt()) {
+                cantidad = scanner.nextInt();
+                scanner.nextLine();
+                if (cantidad > 0 && cantidad <= seleccionado.stock) {
+                    break;
+                } else {
+                    System.out.println("Cantidad inválida o sin stock suficiente. Intente nuevamente.");
+                }
+            } else {
+                System.out.println("Entrada no válida. Debe ser un número.");
+                scanner.nextLine();
+            }
+        }
+
+        double total = cantidad * seleccionado.precio;
+        limpiarConsola();
+
+        System.out.println("Resumen de la compra:");
+        System.out.println("---------------------------");
+        System.out.println("Producto: " + seleccionado.nombre);
+        System.out.println("Cantidad: " + cantidad);
+        System.out.printf("Precio unitario: $%.2f\n", seleccionado.precio);
+        System.out.println("---------------------------");
+        System.out.printf("Total a pagar: $%.2f\n", total);
+
+
+        double pago = 0;
+        while (true) {
+            System.out.print("Ingrese el monto con el que va a pagar: $");
+            if (scanner.hasNextDouble()) {
+                pago = scanner.nextDouble();
+                scanner.nextLine();
+                if (pago >= total) {
+                    break;
+                } else {
+                    System.out.printf("Pago insuficiente. Faltan $%.2f\n", total - pago);
+                }
+            } else {
+                System.out.println("Entrada no válida. Debe ser un monto numérico.");
+                scanner.nextLine();
+            }
+        }
+
+        double cambio = pago - total;
+        System.out.printf("Pago recibido. Su cambio es: $%.2f\n", cambio);
+
+        System.out.print("¿Desea confirmar la venta? (s/n): ");
+        String respuesta = scanner.nextLine();
+
+        if (respuesta.equalsIgnoreCase("s")) {
+            seleccionado.stock -= cantidad;
+            agregarVenta(seleccionado.nombre, cantidad, seleccionado.precio);
+            System.out.println("Venta realizada correctamente.");
+        } else {
+            System.out.println("Venta cancelada. Reembolsando: $" + pago);
+        }
+
+        System.out.println("Presione Enter para continuar...");
+        scanner.nextLine();
+    }
+
+
+
+    // Agregar una venta a la lista enlazada
+    public void agregarVenta(String nombre, int cantidad, double precio) {
+        Nodo nueva = new Nodo(nombre, cantidad, precio);
+        if (inicio == null) {
+            inicio = nueva;
+        } else {
+            Nodo actual = inicio;
+            while (actual.siguiente != null) {
+                actual = actual.siguiente;
+            }
+            actual.siguiente = nueva;
+        }
+    }
+
+    // Mostrar todas las ventas guardadas
+    public void verVentasRegistradas(Scanner scanner) {
+        if (inicio == null) {
+            System.out.println("No hay ventas aún.");
+        } else {
+            Nodo actual = inicio;
+            System.out.println("\nVentas registradas:");
+            while (actual != null) {
+                System.out.println("- Producto: " + actual.producto +
+                        " | Cantidad: " + actual.cantidad +
+                        " | Precio unitario: $" + actual.precio);
+                actual = actual.siguiente;
+            }
+        }
+
+        System.out.println("Presione Enter para volver al menú...");
+        scanner.nextLine();
+    }
 }
