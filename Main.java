@@ -2,15 +2,34 @@ import java.util.Scanner;
 
 public class Main {
 
-    // Menu principal tiene como objetivo mostrar los datos
+    // Método para limpiar la consola
+    public static void limpiarConsola() {
+        try {
+            // Limpiar la consola para Windows
+            if (System.getProperty("os.name").contains("Windows")) {
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } 
+            // Limpiar la consola para sistemas basados en Unix (Linux/Mac)
+            else {
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
+            }
+        } catch (Exception e) {
+            System.out.println("Error al limpiar la consola");
+        }
+    }
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        
+
+        // Inicializando un objeto de la clase Ventas
+        Ventas ventas = new Ventas();
 
         int opcion;
         
         // Bucle principal del menú
         do {
+            limpiarConsola();
             
             System.out.println("\n|========== Recarga Tu Envase ==========|");
             System.out.println("|                                       |");
@@ -28,11 +47,13 @@ public class Main {
             switch (opcion) {
                 case 1:
                     // Registrar venta
-                    System.out.println("Opción 1: Registrar venta");
+                    limpiarConsola();
+                    ventas.mostrarProductosDisponibles(scanner);  
                     break;
                 case 2:
                     // Ver ventas registradas
-                    Ventas.verVentasRegistradas(scanner);  
+                    limpiarConsola();
+                    ventas.verVentasRegistradas(scanner);  // Llamada al método verVentasRegistradas
                     break;
                 case 3:
                     // Cancelar última venta
