@@ -1,0 +1,173 @@
+indicaciones
+Al final de cada jornada (día) de trabajo, el grupo deberá documentar:
+
+solo se trabajo un dia (08/06/2025) (IA GEMINIS)
+
+        El programa "Recarga Tu Envase" está diseñado para gestionar un negocio 
+        de recarga de productos, como detergentes y desinfectantes, atendiendo 
+        a los clientes de manera eficiente y ordenada. Para ello, se necesitaba 
+        una estructura de datos que permitiera gestionar de forma adecuada tanto 
+        el flujo de clientes como las transacciones de ventas. Después de analizar 
+        las necesidades, decidí utilizar diferentes estructuras de datos que se ajustaran 
+        a cada propósito específico: listas enlazadas, colas y pilas.
+
+        Las listas enlazadas se utilizaron para gestionar el registro 
+        de las ventas realizadas. Esta estructura es ideal porque permite 
+        almacenar de manera dinámica las transacciones a medida que se van 
+        registrando y facilita la inserción de nuevos elementos sin necesidad 
+        de reestructurar la colección de datos. Además, permite recorrer fácilmente 
+        todas las ventas cuando se necesita hacer un resumen o generar un reporte.
+
+        Las colas fueron empleadas para organizar el flujo de 
+        clientes, implementando el principio FIFO (First In, First Out). 
+        Esto asegura que los clientes sean atendidos en el orden en que llegaron.
+        Cada cliente se agrega al final de la cola y, cuando es su turno, se desencola 
+        y se le atiende, lo que permite un manejo justo y ordenado de los clientes que esperan su atención.
+
+        Finalmente, las pilas fueron elegidas para gestionar el 
+        historial de ventas de manera que la última venta realizada 
+        sea la primera en poder ser cancelada. Este uso de la pila 
+        (LIFO - Last In, First Out) permite deshacer la venta más reciente, 
+        devolver el stock al producto correspondiente y restaurar la cantidad 
+        de inventario, lo que agrega una capa de flexibilidad al sistema en caso 
+        de errores o cambios en las transacciones.
+
+commit add - version 1 (estructura) 
+
+r= solo estructura de prueba
+
+commit add - version 2 (se agrego el menu - aun sin funcionalidad)
+
+        r= El código implementa un menú principal en un programa de Java donde el usuario puede elegir 
+        entre cuatro opciones: 
+        registrar una venta, ver las ventas registradas, cancelar la última venta, o salir del programa. 
+        Se utiliza un bucle do-while para mostrar repetidamente el menú hasta que el usuario selecciona 
+        la opción de salir. El menú se presenta con un mensaje para cada opción, y se usa la clase Scanner 
+        para leer la entrada del usuario. Dependiendo de la opción seleccionada, se muestra un mensaje 
+        relacionado con la acción, pero aún no se ha implementado la funcionalidad de cada opción. 
+        Finalmente, el objeto Scanner se cierra al terminar la ejecución del programa.
+
+commit add - version 3 (se agrego el archivo Ventas.java en el cual va a manjear la logica 
+de las ventas, hasta ahora solo le di funcionalidad a un metodo el cual solo muestra 
+texto pero estaba probando que todo estuviera bien)
+
+        r= Se implementó la opción para ver las ventas registradas dentro del menú principal. 
+        Al seleccionar la opción 2, se llama al método verVentasRegistradas de la clase Ventas, 
+        que simula la visualización de una lista de productos con sus respectivas cantidades y precios. 
+        Además, se añadió un comportamiento que espera que el usuario presione Enter para continuar, 
+        mejorando la interacción con el programa. También se cerró el Scanner al salir del programa, 
+        asegurando una correcta liberación de los recursos.
+
+commit add - version 4 ( implementando logica aun no terminada de el archivo ventas , 
+lo que hice fue agregar la clase producto y luego hacer un arreglo de esos productos
+ ya precargados para simular el stock de la tienda y un metodo que los muestra, y el 
+ metodo verventasregistradas solo funciona de prueba, todo ese texto es inventando, 
+ aun no tiene funcionalidad y tambien añadi el limpiar consola
+
+        r= Se añadió la funcionalidad para limpiar la consola en cada interacción del menú, 
+        utilizando el método limpiarConsola() que detecta el sistema operativo y ejecuta el comando 
+        adecuado para limpiar la pantalla. Además, se implementó la opción 1 del menú para mostrar los 
+        productos disponibles en la clase Ventas, la cual muestra una lista de productos precargados 
+        junto con su cantidad y precio. El usuario puede ver esta lista antes de continuar con el proceso 
+        de registro de ventas. También se optimizó la navegación entre menús con la espera del usuario 
+        presionando Enter para continuar.
+
+commit add - version 5 ( implementacion de el sisteam de ventas con la lista enlazada 
+creada de 0 , aqui hice muchas cosas (1) reemplace el sistema de ventas estaticos con
+una lista enlazada que almacena cada venta registrada , (2) el metodo registrarventa 
+qeu permite seleccionar el producto, cantidad y pagar , (3) logica de validacion en 
+general para la seleccion de la cantidad y monto permitiendo volver a repetir si hay 
+una excepcion , (4) el metodo limpiar consola a la clase ventas, (5) resumen previo de 
+la compra con los detalles , (6) verventasregistradas muestra la lista enlazada real ya
+ no es un texto
+
+r= 
+        En este commit, se implementó la funcionalidad para registrar ventas y 
+        almacenar las transacciones en una lista enlazada. Se añadió la opción 
+        en el menú para registrar una venta, donde el usuario selecciona un producto, 
+        ingresa la cantidad y realiza el pago. En caso de que la venta sea confirmada, 
+        la venta se agrega a una lista enlazada usando la clase Nodo, que almacena el nombre del producto, 
+        la cantidad y el precio.
+
+        Para la creación de la lista enlazada, se utilizó un prompt dirigido a la IA 
+        para obtener ayuda con la lógica de cómo implementar una lista enlazada en Java. 
+        La IA proporcionó una solución que consistía en una clase Nodo con atributos 
+        para los datos de la venta, así como un método para agregar nuevas ventas al final 
+        de la lista. Gracias a esta ayuda, se logró estructurar correctamente la lista
+        enlazada para gestionar las ventas registradas.
+
+        Además, se implementó la opción para visualizar las ventas registradas, 
+        donde se recorre la lista enlazada para mostrar cada transacción guardada. 
+        El flujo también incluye validaciones para asegurar que los datos ingresados
+        por el usuario sean correctos y se gestione adecuadamente el pago y cambio al confirmar una venta.
+
+
+  commit add - version 6 implementacion de la cola perzonalizada para gestion de atencion al cliente, 
+  (1) se agrego la estructura de datos de cola cliente implementada desde 0 con la clase nodocola, 
+  (2) se añadio un atributocola dentro de laclase de ventas para manejar la fila de espera de los 
+  clientes , (3) se agrego el metodo cargarclientesencola para simular la llegada de los clientes ,
+  (4) el metodo registrar venta lo modifique para atender al primer cliente en la cola (FIFO) usando
+   desencolar al iniciar la venta. (5) se muestre el nomrbe del cliente al ser atentidido , (6) 
+   se agrego verclientes en cola para ver los clientes en espera.
+
+
+   r= 
+        En este commit se implementó la funcionalidad para gestionar clientes 
+        mediante una cola, así como el registro de ventas y su visualización. 
+        Para implementar la cola de clientes, se creó una clase ColaClientes que 
+        simula el comportamiento de una cola FIFO (First In, First Out), donde los 
+        clientes se encolan al inicio y se desencolan cuando se les atiende. Esta 
+        implementación permite manejar el flujo de atención a clientes de manera ordenada.
+
+        Para la implementación de la cola, se pidió ayuda a la IA para comprender 
+        cómo estructurar una cola en Java utilizando una lista enlazada. La IA 
+        proporcionó la lógica correcta para manejar la cola, utilizando una clase 
+        NodoCola para almacenar los datos de cada cliente y métodos como encolar, 
+        desencolar y mostrarCola para gestionar los clientes en espera. Gracias a esta 
+        ayuda, se estructuró adecuadamente la cola y se integró en el proceso de ventas 
+        para atender a los clientes en el orden en que llegaron.
+
+        Adicionalmente, se integró la funcionalidad para registrar ventas, 
+        donde el cliente se selecciona desde la cola y se le permite elegir 
+        productos, realizar el pago y confirmar o cancelar la venta. La lista 
+        enlazada de ventas (Nodo) se utiliza para almacenar las transacciones 
+        realizadas. También se implementaron validaciones de entrada para asegurar 
+        que los datos ingresados por el usuario sean correctos.
+
+            Finalmente, se agregó la opción de ver las ventas registradas y 
+            los clientes en espera, mostrando los detalles de las ventas realizadas 
+            y la lista de clientes en cola para ser atendidos.
+
+
+commit add - version 7 implementacion completa de todas las estrucutras, 
+lista enlazada , cola y pila ,(1) se agrego la clase pilaventas y la clase 
+nodopila para gestionar el historial de las ventas, cada venta realizada 
+se apila usando el metodo apilar , almacenando el producto, cantidad y 
+precio, (2) se añade la funcionalidad de cancelar la ultima venta utilizando 
+el metodo despilar restaurando el sotck del producto, (3) comentarios mas 
+detallados en todo el flujo del sistema
+
+r=
+        En este commit, se implementó la funcionalidad para gestionar un historial de ventas utilizando una 
+        pila, además de agregar la opción para cancelar la última venta realizada. La pila se utiliza 
+        para almacenar las ventas en el orden en que se realizan, de modo que la última venta realizada 
+        sea la primera en ser cancelada (LIFO, Last In, First Out). Se implementó una clase PilaVentas 
+        que incluye métodos como apilar para agregar ventas al historial, desapilar para eliminar la última 
+        venta y estaVacia para verificar si la pila está vacía.
+
+        Para implementar esta lógica de pilas, recurrí a la ayuda de la IA para
+        comprender cómo estructurar una pila en Java. La IA proporcionó la implementación 
+        de una pila usando una clase NodoPila, que almacena información sobre el producto, 
+        la cantidad y el precio. Además, me indicó cómo manejar la lógica de desapilar para 
+        quitar la última venta y ajustar el stock del producto correspondiente, lo que permitió 
+        realizar la funcionalidad de cancelación correctamente.
+
+        La pila no solo guarda las ventas de forma eficiente, sino que también facilita la restauración 
+        del stock cuando se cancela una venta. Cuando el usuario decide cancelar la última venta, 
+        la pila se desapila para obtener la venta más reciente, luego se elimina el nodo correspondiente 
+        de la lista enlazada de ventas y se devuelve el stock del producto a su cantidad original.
+
+        Además de la funcionalidad de la pila, se mejoró el sistema para gestionar clientes en cola, 
+        registrar ventas y permitir al usuario ver tanto las ventas registradas como los clientes en 
+        espera. Esta implementación asegura que el sistema sea más robusto al permitir la cancelación 
+        de ventas y el mantenimiento del historial de transacciones.
